@@ -1,5 +1,5 @@
 {
-    1: 'google.mail.com',
-    2: 'yahoo.mail.com'
+    '1': 'smtp.gmail.com',
+    '2': 'yahoo.mail.com'
 
 }
