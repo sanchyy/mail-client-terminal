@@ -56,6 +56,7 @@ def send_mail(m):
 def view_inbox():
     mail = imaplib.IMAP4_SSL('imap.gmail.com')
     mail.login(user.mail,user.password)
+    inboxes = mail.list()
     return  
 
 if __name__ == '__main__':
