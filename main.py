@@ -4,6 +4,8 @@ from email.mime.text import MIMEText
 import smtplib
 import imaplib
 import getpass
+from mail import Mail
+from user import User
 
 PORT = 587
 
@@ -34,9 +36,9 @@ def set_mail():
     mail.service = services()
     mail.user = user
     mail.sender = str(input("A qui vols enviar l'e-mail"))
-    with open('msg_to_{}.txt'.format(mail['To'].split('@')[0]),'w') as f:
+    with open('msg_to_{}.txt'.format(mail.sender.split('@')[0]),'w') as f:
         f.write('SUBJECT: ')
-    os.system('vi msg_to_{}.txt'.format(mail['To'].split('@')[0])) 
+    os.system('vi msg_to_{}.txt'.format(mail.sender['To'].split('@')[0])) 
     with open('msg_to_{}.txt'.format(mail.sender.split('@')[0]),'w') as f:
         mail.subj = f.readline()
         message = f.read().splitlines(True)
@@ -54,15 +56,14 @@ def send_mail(m):
     mailserver.quit()
 
 def view_inbox():
-    mail = imaplib.IMAP4_SSL('imap.gmail.com')
-    mail.login(user.mail,user.password)
-    inboxes = mail.list()
-    return  
+    #mail = imaplib.IMAP4_SSL('imap.gmail.com')
+    #mail.login(user.mail,user.password)
+    #inboxes = mail.list()
+   return os.system("curl -u {}:{} --silent 'https://mail.google.com/mail/feed/atom |  grep -oPm1 '(?<=<title>)[^<]+' | sed '1d'".format(user.mail,user.password))
 
 if __name__ == '__main__':
     m = Mail()
     user = User()
-    mail
     
     while 1:
         option = str(input("> ")).lower()
@@ -79,11 +80,11 @@ if __name__ == '__main__':
                 m = set_mail()
                 send_mail(m)
 
-        elif: option == 'inbox':
+        elif option == 'inbox':
             if user.mail == "":
                 print("Primer fes login!")
             else:
-               view_inbox(m)
+               inbox = view_inbox()
 
         else:
             print('Not a possible action, type help for information')
